@@ -35,7 +35,7 @@ int viewCount = 7;
 View *views[] = {
     new ImageView(APPLE_XBM, APPLE_XBM_WIDTH, APPLE_XBM_HEIGHT),
     new TextView("Hello."),
-    new TextView("Think Different.", FONT_SIZE_H2),
+    new TextView("Think different.", FONT_SIZE_H2),
     new AnimationView(animationFrames, ANIMATION_XBM_WIDTH, ANIMATION_XBM_HEIGHT, 9, 6),
     new ClockView(),
     new WeatherTodayView(),
@@ -63,19 +63,33 @@ void previousView() {
   setView(viewIndex, TransitionOptions(TRANSITION_TO_RIGHT));
 }
 
+void handleKeyPress(KeyCode keyCode) {
+  switch (keyCode) {
+  case KEY_LEFT_ARROW:
+    previousView();
+    break;
+  case KEY_RIGHT_ARROW:
+    nextView();
+    break;
+  }
+}
+
 void setup() {
   Serial.begin(115200);
   Serial.println();
 
   app.begin();
   // Settings
-  app.getScreen()->setOrientation(true);
+  app.getScreen()->setOrientation(false);
+  app.getKeyboard()->registerKey(KEY_LEFT_ARROW, D5);
+  app.getKeyboard()->registerKey(KEY_RIGHT_ARROW, D6);
+  app.onKeyPress(handleKeyPress);
 
   setView(0);
 }
 
 void loop() {
-  if (millis() - lastViewChange > 3000) {
+  if (millis() - lastViewChange > 10 * 1000) {
     nextView();
   }
   int timeBudget = app.update();
