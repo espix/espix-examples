@@ -11,7 +11,7 @@ public:
   }
 
   bool shouldUpdate(ViewUpdateOptions options) {
-    if (options.forceUpdate) {
+    if (options.forceUpdate || isDirty()) {
       return true;
     }
     if (options.now - getLastUpdate() > 1000) {
