@@ -33,7 +33,6 @@ const uint8_t *animationFrames[] = {ANIMATION_XBM_01, ANIMATION_XBM_02, ANIMATIO
                                     ANIMATION_XBM_07, ANIMATION_XBM_08, ANIMATION_XBM_09};
 
 TextView *ipView = new TextView(FONT_SIZE_H2);
-ProgressView *progressView = new ProgressView("Connecting to WiFi...", PROGRESS_INFINITY);
 View *views[] = {
     new ImageView(APPLE_XBM, APPLE_XBM_WIDTH, APPLE_XBM_HEIGHT),
     new TextView("Hello."),
@@ -101,8 +100,7 @@ void setup() {
   // WiFi
   connecting = true;
   // app->getNetwork()->connect("Henry's Living Room 2.4GHz", "13913954971");
-  app->getNetwork()->connect("Henry's iPhone 6", "13913954971", onConnected);
-  app->setRootView(progressView);
+  app->getNetwork()->connect("Henry's iPhone 6", "13913954971", true, onConnected);
 }
 
 void loop() {
