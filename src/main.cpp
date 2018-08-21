@@ -1,7 +1,5 @@
 #include <Arduino.h>
 
-#include <SH1106.h>
-
 #include <espix-core.h>
 #include <espix-design.h>
 
@@ -83,6 +81,12 @@ void handleKeyPress(KeyCode keyCode) {
   }
 }
 
+void onConnected() {
+  connecting = false;
+  ipView->setText(app->getNetwork()->getLocalIP());
+  setView(0, TransitionOptions(TRANSITION_TO_LEFT));
+}
+
 void setup() {
   Serial.begin(115200);
   Serial.println();
@@ -96,20 +100,15 @@ void setup() {
 
   // WiFi
   connecting = true;
-  app->connectToWiFi(WiFiConnectionSetting("Henry's Living Room 2.4GHz", "13913954971"));
+  // app->getNetwork()->connect("Henry's Living Room 2.4GHz", "13913954971");
+  app->getNetwork()->connect("Henry's iPhone 6", "13913954971", onConnected);
   app->setRootView(progressView);
 }
 
 void loop() {
   int timeBudget = app->update();
   if (timeBudget > 0) {
-    if (connecting) {
-      if (app->isWiFiConnected()) {
-        connecting = false;
-        ipView->setText(app->getWiFiLocalIP());
-        setView(0, TransitionOptions(TRANSITION_TO_LEFT));
-      }
-    } else {
+    if (!connecting) {
       if (millis() - lastViewChange > 10 * 1000) {
         nextView();
       }
