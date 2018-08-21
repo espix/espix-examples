@@ -10,17 +10,17 @@ public:
     _startTime = millis();
   }
 
-  bool shouldUpdate(ViewUpdateOptions options) {
-    if (options.forceUpdate || isDirty()) {
+  bool shouldUpdate() {
+    if (isDirty()) {
       return true;
     }
-    if (options.now - getLastUpdate() > 1000) {
+    if (millis() - getLastUpdate() > 1000) {
       return true;
     }
     return false;
   }
 
-  void update(ViewUpdateOptions options) {
+  void update() {
     _text = _formatTime(millis() - _startTime);
   }
 
