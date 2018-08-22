@@ -7,7 +7,6 @@
 class ClockView : public View {
 public:
   ClockView() {
-    _startTime = millis();
   }
 
   bool shouldUpdate() {
@@ -21,7 +20,7 @@ public:
   }
 
   void update() {
-    _text = _formatTime(millis() - _startTime);
+    _text = TimeClient::getInstance()->getFormattedTime();
   }
 
   void render(DrawingContext *context) {
@@ -30,18 +29,6 @@ public:
     context->drawString(_text);
   }
 
-  String _formatTime(unsigned long duration) {
-    unsigned long durationInSeconds = duration / 1000;
-    unsigned short secs = durationInSeconds % 60;
-    unsigned short mins = durationInSeconds / 60;
-    String result = mins < 10 ? "13:0" : "13:";
-    result += String(mins);
-    result += secs < 10 ? ":0" : ":";
-    result += String(secs);
-    return result;
-  }
-
 private:
-  unsigned long _startTime;
-  String _text = "--:--:--";
+  String _text = "-- : -- : --";
 };
