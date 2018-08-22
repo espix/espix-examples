@@ -1,5 +1,7 @@
 #include <Arduino.h>
 
+#include <SH1106Wire.h>
+
 #include <espix-core.h>
 #include <espix-design.h>
 
