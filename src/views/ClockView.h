@@ -20,7 +20,7 @@ public:
   }
 
   void update() {
-    _text = TimeClient::getInstance()->getFormattedTime();
+    _text = TimeClient.getLocalTimeStrig();
   }
 
   void render(DrawingContext *context) {
