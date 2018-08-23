@@ -39,10 +39,10 @@ View *views[] = {
     new ImageView(APPLE_XBM, APPLE_XBM_WIDTH, APPLE_XBM_HEIGHT),
     new TextView("Hello."),
     new TextView("Think different.", FONT_SIZE_H2),
-    new AnimationView(animationFrames, ANIMATION_XBM_WIDTH, ANIMATION_XBM_HEIGHT, 9, 6),
     new ClockView(),
     new WeatherTodayView(),
     new WeatherForecastView(),
+    new AnimationView(animationFrames, ANIMATION_XBM_WIDTH, ANIMATION_XBM_HEIGHT, 9, 6),
     ipView};
 
 void setView(int index, TransitionOptions options = TRANSITION_OPTIONS_NONE) {
@@ -108,11 +108,11 @@ void setup() {
 void loop() {
   int timeBudget = app->update();
   if (timeBudget > 0) {
-    if (!connecting) {
-      if (millis() - lastViewChange > 10 * 1000) {
-        nextView();
-      }
-    }
+    // if (!connecting) {
+    //   if (millis() - lastViewChange > 10 * 1000) {
+    //     nextView();
+    //   }
+    // }
     delay(timeBudget);
   }
 }
