@@ -101,8 +101,10 @@ void setup() {
 
   // WiFi
   connecting = true;
-  // app->getNetwork()->connect("Henry's Living Room 2.4GHz", "13913954971");
-  app->getNetwork()->connect("Henry's iPhone 6", "13913954971", true, onConnected);
+  WiFiConnectionSetting settings[] = {
+      WiFiConnectionSetting("Henry's iPhone 6", "13913954971"),
+      WiFiConnectionSetting("Henry's Living Room 2.4GHz", "13913954971")};
+  app->getNetwork()->connect(settings, 2, true, onConnected);
 }
 
 void loop() {
