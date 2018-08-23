@@ -20,7 +20,11 @@ public:
   }
 
   void update() {
-    _text = TimeClient.getLocalTimeStrig();
+    if (TimeClient.isReady()) {
+      _text = TimeClient.getLocalTimeStrig();
+    } else {
+      _text = "-- : -- : --";
+    }
   }
 
   void render(DrawingContext *context) {
@@ -30,5 +34,5 @@ public:
   }
 
 private:
-  String _text = "-- : -- : --";
+  String _text;
 };
