@@ -36,12 +36,12 @@ const uint8_t *animationFrames[] = {ANIMATION_XBM_01, ANIMATION_XBM_02, ANIMATIO
 
 TextView *ipView = new TextView(FONT_SIZE_H2);
 View *views[] = {
-    new ImageView(APPLE_XBM, APPLE_XBM_WIDTH, APPLE_XBM_HEIGHT),
-    new TextView("Hello."),
-    new TextView("Think different.", FONT_SIZE_H2),
     new ClockView(),
     new WeatherTodayView(),
     new WeatherForecastView(),
+    new ImageView(APPLE_XBM, APPLE_XBM_WIDTH, APPLE_XBM_HEIGHT),
+    new TextView("Hello."),
+    new TextView("Think different.", FONT_SIZE_H2),
     new AnimationView(animationFrames, ANIMATION_XBM_WIDTH, ANIMATION_XBM_HEIGHT, 9, 6),
     ipView};
 
@@ -84,8 +84,9 @@ void handleKeyPress(KeyCode keyCode) {
 
 void onConnected() {
   connecting = false;
+  app->enableOTA();
   ipView->setText(app->getNetwork()->getLocalIP());
-  setView(0, TransitionOptions(TRANSITION_TO_LEFT));
+  setView(0, TransitionOptions(TRANSITION_TO_BOTTOM));
 }
 
 void setup() {
@@ -95,6 +96,7 @@ void setup() {
   app->begin();
   // Settings
   app->getScreen()->setOrientation(false);
+  app->getScreen()->setBrightness(1);
   app->getKeyboard()->registerKey(KEY_LEFT_ARROW, D5);
   app->getKeyboard()->registerKey(KEY_RIGHT_ARROW, D6);
   app->onKeyPress(handleKeyPress);
