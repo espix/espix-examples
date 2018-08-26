@@ -34,6 +34,7 @@ int viewCount = 8;
 
 SH1106Wire display(0x3c, OLED_SDA, OLED_CLK);
 Application application;
+ProgressView connectionView("Connecting to WiFi...", PROGRESS_INFINITY);
 
 const uint8_t *animationFrames[] = {ANIMATION_XBM_01, ANIMATION_XBM_02, ANIMATION_XBM_03,
                                     ANIMATION_XBM_04, ANIMATION_XBM_05, ANIMATION_XBM_06,
@@ -96,6 +97,7 @@ void onConnected() {
 }
 
 void connect() {
+  application.setRootView(&connectionView);
   WiFiConnectionSetting settings[] = {
       WiFiConnectionSetting("Henry's iPhone 6", "13913954971"),
       WiFiConnectionSetting("Henry's Living Room 2.4GHz", "13913954971")};
