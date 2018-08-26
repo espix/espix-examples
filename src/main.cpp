@@ -25,6 +25,7 @@
 #define KY04_CLK D5
 #define KY04_DT D6
 #define KY04_SW D7
+#define ESC_BUTTON D3
 
 bool connecting = false;
 unsigned long lastUpdate = 0;
@@ -40,7 +41,7 @@ const uint8_t *animationFrames[] = {ANIMATION_XBM_01, ANIMATION_XBM_02, ANIMATIO
                                     ANIMATION_XBM_04, ANIMATION_XBM_05, ANIMATION_XBM_06,
                                     ANIMATION_XBM_07, ANIMATION_XBM_08, ANIMATION_XBM_09};
 
-TextView *ipView = new TextView(FONT_SIZE_H2);
+TextView ipView(FONT_SIZE_H2);
 View *views[] = {
     new ClockView(),
     new WeatherTodayView(),
@@ -49,7 +50,7 @@ View *views[] = {
     new TextView("Hello."),
     new TextView("Think different.", FONT_SIZE_H2),
     new AnimationView(animationFrames, ANIMATION_XBM_WIDTH, ANIMATION_XBM_HEIGHT, 9, 6),
-    ipView};
+    &ipView};
 
 void setView(int index, TransitionOptions options = TRANSITION_OPTIONS_NONE) {
   viewIndex = index;
@@ -57,42 +58,60 @@ void setView(int index, TransitionOptions options = TRANSITION_OPTIONS_NONE) {
   lastViewChange = millis();
 }
 
-void nextView() {
+void nextView(int duration = 200) {
   viewIndex++;
   if (viewIndex >= viewCount) {
     viewIndex = 0;
   }
-  setView(viewIndex, TransitionOptions(TRANSITION_TO_LEFT));
+  setView(viewIndex, TransitionOptions(TRANSITION_TO_BOTTOM, duration));
 }
 
-void previousView() {
+void previousView(int duration = 200) {
   viewIndex--;
   if (viewIndex < 0) {
     viewIndex = viewCount - 1;
   }
-  setView(viewIndex, TransitionOptions(TRANSITION_TO_RIGHT));
+  setView(viewIndex, TransitionOptions(TRANSITION_TO_TOP, duration));
 }
 
 void handleKeyPress(KeyCode keyCode) {
   if (connecting) {
     return;
   }
-
   switch (keyCode) {
-  case KEY_LEFT_ARROW:
-    previousView();
-    break;
   case KEY_ENTER:
-  case KEY_RIGHT_ARROW:
     nextView();
     break;
+  case KEY_ESC:
+    Serial.println("ESC button pressed.");
+    break;
+  }
+}
+
+void handleScroll(int delta) {
+  if (connecting) {
+    return;
+  }
+  int duration = 200;
+  int value = std::abs(delta);
+  if (value >= 4) {
+    duration = 100;
+  } else if (value >= 6) {
+    duration = 50;
+  } else if (value >= 8) {
+    duration = 10;
+  }
+  if (delta > 0) {
+    previousView(duration);
+  } else {
+    nextView(duration);
   }
 }
 
 void onConnected() {
   connecting = false;
   application.enableOTA();
-  ipView->setText(WiFiNetwork.getLocalIP());
+  ipView.setText(WiFiNetwork.getLocalIP());
   setView(0, TransitionOptions(TRANSITION_TO_BOTTOM));
 }
 
@@ -110,7 +129,8 @@ void setupDevices() {
   Screen.setOrientation(true);
   Screen.setBrightness(1);
 
-  Keyboard.registerKey(KEY_ENTER, KY04_SW);
+  Keyboard.registerJogDial(KY04_CLK, KY04_DT, KY04_SW);
+  Keyboard.registerKey(KEY_ESC, ESC_BUTTON);
   Keyboard.begin();
 }
 
@@ -118,6 +138,7 @@ void setupApp() {
   application.begin();
   // Settings
   application.onKeyPress(handleKeyPress);
+  application.onScroll(handleScroll);
 }
 
 void setup() {
