@@ -91,8 +91,16 @@ void handleKeyPress(KeyCode keyCode) {
 void onConnected() {
   connecting = false;
   app.enableOTA();
-  ipView->setText(app.getNetwork()->getLocalIP());
+  ipView->setText(WiFiNetwork.getLocalIP());
   setView(0, TransitionOptions(TRANSITION_TO_BOTTOM));
+}
+
+void connect() {
+  WiFiConnectionSetting settings[] = {
+      WiFiConnectionSetting("Henry's iPhone 6", "13913954971"),
+      WiFiConnectionSetting("Henry's Living Room 2.4GHz", "13913954971")};
+  WiFiNetwork.connect(settings, 2, true, onConnected);
+  connecting = true;
 }
 
 void setupDevices() {
@@ -100,24 +108,20 @@ void setupDevices() {
   Keyboard.begin();
 }
 
-void setup() {
-  Serial.begin(115200);
-  Serial.println();
-
-  setupDevices();
-
+void setupApp() {
   app.begin();
   // Settings
   app.getScreen()->setOrientation(true);
   app.getScreen()->setBrightness(1);
   app.onKeyPress(handleKeyPress);
+}
 
-  // WiFi
-  connecting = true;
-  WiFiConnectionSetting settings[] = {
-      WiFiConnectionSetting("Henry's iPhone 6", "13913954971"),
-      WiFiConnectionSetting("Henry's Living Room 2.4GHz", "13913954971")};
-  app.getNetwork()->connect(settings, 2, true, onConnected);
+void setup() {
+  Serial.begin(115200);
+  Serial.println();
+  setupDevices();
+  setupApp();
+  connect();
 }
 
 void loop() {
