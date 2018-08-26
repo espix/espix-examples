@@ -33,7 +33,7 @@ int viewIndex = 0;
 int viewCount = 8;
 
 SH1106Wire display(0x3c, OLED_SDA, OLED_CLK);
-Application app(&display);
+Application application;
 
 const uint8_t *animationFrames[] = {ANIMATION_XBM_01, ANIMATION_XBM_02, ANIMATION_XBM_03,
                                     ANIMATION_XBM_04, ANIMATION_XBM_05, ANIMATION_XBM_06,
@@ -52,7 +52,7 @@ View *views[] = {
 
 void setView(int index, TransitionOptions options = TRANSITION_OPTIONS_NONE) {
   viewIndex = index;
-  app.setRootView(views[viewIndex], options);
+  application.setRootView(views[viewIndex], options);
   lastViewChange = millis();
 }
 
@@ -90,7 +90,7 @@ void handleKeyPress(KeyCode keyCode) {
 
 void onConnected() {
   connecting = false;
-  app.enableOTA();
+  application.enableOTA();
   ipView->setText(WiFiNetwork.getLocalIP());
   setView(0, TransitionOptions(TRANSITION_TO_BOTTOM));
 }
@@ -104,16 +104,18 @@ void connect() {
 }
 
 void setupDevices() {
+  Screen::getInstance()->begin(&display);
+  Screen::getInstance()->setOrientation(true);
+  Screen::getInstance()->setBrightness(1);
+
   Keyboard.registerKey(KEY_ENTER, KY04_SW);
   Keyboard.begin();
 }
 
 void setupApp() {
-  app.begin();
+  application.begin();
   // Settings
-  app.getScreen()->setOrientation(true);
-  app.getScreen()->setBrightness(1);
-  app.onKeyPress(handleKeyPress);
+  application.onKeyPress(handleKeyPress);
 }
 
 void setup() {
@@ -125,7 +127,7 @@ void setup() {
 }
 
 void loop() {
-  int timeBudget = app.update();
+  int timeBudget = application.update();
   if (timeBudget > 0) {
     // if (!connecting) {
     //   if (millis() - lastViewChange > 10 * 1000) {
