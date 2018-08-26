@@ -20,15 +20,20 @@
 #include "assets/animation-09.xbm"
 #include "assets/apple.xbm"
 
+#define OLED_SDA D1
+#define OLED_CLK D2
+#define KY04_CLK D5
+#define KY04_DT D6
+#define KY04_SW D7
+
 bool connecting = false;
 unsigned long lastUpdate = 0;
 unsigned long lastViewChange = 0;
 int viewIndex = 0;
 int viewCount = 8;
 
-SH1106Wire *display = new SH1106Wire(0x3c, D1, D2);
-Application *app = new Application(display);
-DrawingContext *context;
+SH1106Wire display(0x3c, OLED_SDA, OLED_CLK);
+Application app(&display);
 
 const uint8_t *animationFrames[] = {ANIMATION_XBM_01, ANIMATION_XBM_02, ANIMATION_XBM_03,
                                     ANIMATION_XBM_04, ANIMATION_XBM_05, ANIMATION_XBM_06,
@@ -47,7 +52,7 @@ View *views[] = {
 
 void setView(int index, TransitionOptions options = TRANSITION_OPTIONS_NONE) {
   viewIndex = index;
-  app->setRootView(views[viewIndex], options);
+  app.setRootView(views[viewIndex], options);
   lastViewChange = millis();
 }
 
@@ -76,6 +81,7 @@ void handleKeyPress(KeyCode keyCode) {
   case KEY_LEFT_ARROW:
     previousView();
     break;
+  case KEY_ENTER:
   case KEY_RIGHT_ARROW:
     nextView();
     break;
@@ -84,33 +90,38 @@ void handleKeyPress(KeyCode keyCode) {
 
 void onConnected() {
   connecting = false;
-  app->enableOTA();
-  ipView->setText(app->getNetwork()->getLocalIP());
+  app.enableOTA();
+  ipView->setText(app.getNetwork()->getLocalIP());
   setView(0, TransitionOptions(TRANSITION_TO_BOTTOM));
+}
+
+void setupDevices() {
+  Keyboard.registerKey(KEY_ENTER, KY04_SW);
+  Keyboard.begin();
 }
 
 void setup() {
   Serial.begin(115200);
   Serial.println();
 
-  app->begin();
+  setupDevices();
+
+  app.begin();
   // Settings
-  app->getScreen()->setOrientation(false);
-  app->getScreen()->setBrightness(1);
-  app->getKeyboard()->registerKey(KEY_LEFT_ARROW, D5);
-  app->getKeyboard()->registerKey(KEY_RIGHT_ARROW, D6);
-  app->onKeyPress(handleKeyPress);
+  app.getScreen()->setOrientation(true);
+  app.getScreen()->setBrightness(1);
+  app.onKeyPress(handleKeyPress);
 
   // WiFi
   connecting = true;
   WiFiConnectionSetting settings[] = {
       WiFiConnectionSetting("Henry's iPhone 6", "13913954971"),
       WiFiConnectionSetting("Henry's Living Room 2.4GHz", "13913954971")};
-  app->getNetwork()->connect(settings, 2, true, onConnected);
+  app.getNetwork()->connect(settings, 2, true, onConnected);
 }
 
 void loop() {
-  int timeBudget = app->update();
+  int timeBudget = app.update();
   if (timeBudget > 0) {
     // if (!connecting) {
     //   if (millis() - lastViewChange > 10 * 1000) {
