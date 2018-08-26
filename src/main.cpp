@@ -99,14 +99,14 @@ void connect() {
   WiFiConnectionSetting settings[] = {
       WiFiConnectionSetting("Henry's iPhone 6", "13913954971"),
       WiFiConnectionSetting("Henry's Living Room 2.4GHz", "13913954971")};
-  WiFiNetwork.connect(settings, 2, true, onConnected);
+  WiFiNetwork.connect(settings, 2, onConnected);
   connecting = true;
 }
 
 void setupDevices() {
-  Screen::getInstance()->begin(&display);
-  Screen::getInstance()->setOrientation(true);
-  Screen::getInstance()->setBrightness(1);
+  Screen.begin(&display);
+  Screen.setOrientation(true);
+  Screen.setBrightness(1);
 
   Keyboard.registerKey(KEY_ENTER, KY04_SW);
   Keyboard.begin();
