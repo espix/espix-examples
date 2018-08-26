@@ -20,8 +20,8 @@ public:
   }
 
   void update() {
-    if (TimeClient::getInstance()->isReady()) {
-      _text = TimeClient::getInstance()->getLocalTimeStrig();
+    if (TimeClient.isReady()) {
+      _text = TimeClient.getLocalTimeStrig();
     } else {
       _text = "-- : -- : --";
     }
