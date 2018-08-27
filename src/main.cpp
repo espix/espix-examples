@@ -35,20 +35,20 @@ int viewCount = 8;
 
 SH1106Wire display(0x3c, OLED_SDA, OLED_CLK);
 Application application;
-ProgressView connectionView("Connecting to WiFi...", PROGRESS_INFINITY);
+ProgressView connectionView("Connecting to WiFi...", ProgressMode::INDETERMINATE);
 
 const uint8_t *animationFrames[] = {ANIMATION_XBM_01, ANIMATION_XBM_02, ANIMATION_XBM_03,
                                     ANIMATION_XBM_04, ANIMATION_XBM_05, ANIMATION_XBM_06,
                                     ANIMATION_XBM_07, ANIMATION_XBM_08, ANIMATION_XBM_09};
 
-TextView ipView(FONT_SIZE_H2);
+TextView ipView(FontSize::H2);
 View *views[] = {
     new ClockView(),
     new WeatherTodayView(),
     new WeatherForecastView(),
     new ImageView(APPLE_XBM, APPLE_XBM_WIDTH, APPLE_XBM_HEIGHT),
     new TextView("Hello."),
-    new TextView("Think different.", FONT_SIZE_H2),
+    new TextView("Think different.", FontSize::H2),
     new AnimationView(animationFrames, ANIMATION_XBM_WIDTH, ANIMATION_XBM_HEIGHT, 9, 6),
     &ipView};
 
@@ -63,7 +63,7 @@ void nextView(int duration = 200) {
   if (viewIndex >= viewCount) {
     viewIndex = 0;
   }
-  setView(viewIndex, TransitionOptions(TRANSITION_TO_BOTTOM, duration));
+  setView(viewIndex, TransitionOptions(TransitionDirection::DOWN, duration));
 }
 
 void previousView(int duration = 200) {
@@ -71,7 +71,7 @@ void previousView(int duration = 200) {
   if (viewIndex < 0) {
     viewIndex = viewCount - 1;
   }
-  setView(viewIndex, TransitionOptions(TRANSITION_TO_TOP, duration));
+  setView(viewIndex, TransitionOptions(TransitionDirection::UP, duration));
 }
 
 void handleKeyPress(KeyCode keyCode) {
@@ -112,7 +112,7 @@ void onConnected() {
   connecting = false;
   application.enableOTA();
   ipView.setText(WiFiNetwork.getLocalIP());
-  setView(0, TransitionOptions(TRANSITION_TO_BOTTOM));
+  setView(0, TransitionOptions(TransitionDirection::DOWN));
 }
 
 void connect() {

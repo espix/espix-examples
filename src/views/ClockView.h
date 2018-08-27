@@ -27,9 +27,9 @@ public:
     }
   }
 
-  void render(DrawingContext *context) {
-    context->setFontSize(FONT_SIZE_H1);
-    context->setTextAlign(TEXT_ALIGN_CENTER_BOTH);
+  void render(CanvasContext *context) {
+    context->setFontSize(FontSize::H1);
+    context->setTextAlign(TextAlign::CENTER_BOTH);
     context->drawString(_text);
   }
 

@@ -12,27 +12,27 @@ String TEMPERATURES[3] = {"26|33", "26|31", "26|32"};
 
 class WeatherForecastView : public View {
 public:
-  void render(DrawingContext *context) {
+  void render(CanvasContext *context) {
     _drawContent(context);
   }
 
 private:
-  void _drawContent(DrawingContext *context) {
+  void _drawContent(CanvasContext *context) {
     _drawForecastDetails(context, 0, 0);
     _drawForecastDetails(context, 44, 1);
     _drawForecastDetails(context, 88, 2);
   }
 
-  void _drawForecastDetails(DrawingContext *context, int x, int dayIndex) {
-    context->setTextAlign(TEXT_ALIGN_CENTER);
-    context->setFontSize(FONT_SIZE_NORMAL);
+  void _drawForecastDetails(CanvasContext *context, int x, int dayIndex) {
+    context->setTextAlign(TextAlign::CENTER);
+    context->setFontSize(FontSize::NORMAL);
     String day = DAYS[dayIndex];
     context->drawString(day, 20 + x, 4);
 
     context->setFont(Meteocons_Plain_21);
     context->drawString(WEATHERS[dayIndex], x + 20, 16);
 
-    context->setFontSize(FONT_SIZE_NORMAL);
+    context->setFontSize(FontSize::NORMAL);
     context->drawString(TEMPERATURES[dayIndex], x + 20, 40);
   }
 };

@@ -8,18 +8,18 @@
 
 class WeatherTodayView : public View {
 public:
-  void render(DrawingContext *context) {
+  void render(CanvasContext *context) {
     _drawContent(context);
   }
 
 private:
-  void _drawContent(DrawingContext *context) {
-    context->setFontSize(FONT_SIZE_NORMAL);
-    context->setTextAlign(TEXT_ALIGN_LEFT);
+  void _drawContent(CanvasContext *context) {
+    context->setFontSize(FontSize::NORMAL);
+    context->setTextAlign(TextAlign::LEFT);
     context->drawString("Mostly Cloudy", 60, 14);
 
     String temp = "32°C";
-    context->setFontSize(FONT_SIZE_H1);
+    context->setFontSize(FontSize::H1);
     context->drawString(temp, 60, 24);
 
     context->setFont(Meteocons_Plain_42);
