@@ -34,7 +34,6 @@ int viewIndex = 0;
 int viewCount = 8;
 
 SH1106Wire display(0x3c, OLED_SDA, OLED_CLK);
-Application application;
 ProgressView connectionView("Connecting to WiFi...", ProgressMode::INDETERMINATE);
 
 const uint8_t *animationFrames[] = {ANIMATION_XBM_01, ANIMATION_XBM_02, ANIMATION_XBM_03,
@@ -54,7 +53,7 @@ View *views[] = {
 
 void setView(int index, TransitionOptions options = TRANSITION_OPTIONS_NONE) {
   viewIndex = index;
-  application.setRootView(views[viewIndex], options);
+  Application.setRootView(views[viewIndex], options);
   lastViewChange = millis();
 }
 
@@ -110,13 +109,13 @@ void handleScroll(int delta) {
 
 void onConnected() {
   connecting = false;
-  application.enableOTA();
+  Application.enableOTA();
   ipView.setText(WiFiNetwork.getLocalIP());
   setView(0, TransitionOptions(TransitionDirection::DOWN));
 }
 
 void connect() {
-  application.setRootView(&connectionView);
+  Application.setRootView(&connectionView);
   WiFiConnectionSetting settings[] = {
       WiFiConnectionSetting("Henry's iPhone 6", "13913954971"),
       WiFiConnectionSetting("Henry's Living Room 2.4GHz", "13913954971")};
@@ -135,10 +134,10 @@ void setupDevices() {
 }
 
 void setupApp() {
-  application.begin();
+  Application.begin();
   // Settings
-  application.onKeyPress(handleKeyPress);
-  application.onScroll(handleScroll);
+  Application.onKeyPress(handleKeyPress);
+  Application.onScroll(handleScroll);
 }
 
 void setup() {
@@ -150,7 +149,7 @@ void setup() {
 }
 
 void loop() {
-  int timeBudget = application.update();
+  int timeBudget = Application.update();
   if (timeBudget > 0) {
     // if (!connecting) {
     //   if (millis() - lastViewChange > 10 * 1000) {
