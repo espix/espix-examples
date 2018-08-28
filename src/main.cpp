@@ -73,11 +73,11 @@ void previousView(int duration = 200) {
   setView(viewIndex, TransitionOptions(TransitionDirection::UP, duration));
 }
 
-void handleKeyPress(KeyCode keyCode) {
+void handleKeyPress(KeyEventArgs e) {
   if (connecting) {
     return;
   }
-  switch (keyCode) {
+  switch (e.keyCode) {
   case KEY_ENTER:
     nextView();
     break;
@@ -87,12 +87,12 @@ void handleKeyPress(KeyCode keyCode) {
   }
 }
 
-void handleScroll(int delta) {
+void handleScroll(ScrollEventArgs e) {
   if (connecting) {
     return;
   }
   int duration = 200;
-  int value = std::abs(delta);
+  int value = std::abs(e.delta);
   if (value >= 4) {
     duration = 100;
   } else if (value >= 6) {
@@ -100,7 +100,7 @@ void handleScroll(int delta) {
   } else if (value >= 8) {
     duration = 10;
   }
-  if (delta > 0) {
+  if (e.delta > 0) {
     previousView(duration);
   } else {
     nextView(duration);
