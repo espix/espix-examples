@@ -13,7 +13,7 @@ public:
 
   void didMount() {
     if (getCurrentView() == NULL) {
-      slideToFirstSubview();
+      showFirstSubview();
     }
   }
 };
