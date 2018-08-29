@@ -4,7 +4,7 @@
 
 #include <espix-core.h>
 
-#include "../assets/icon-fonts.h"
+#include "../../assets/icon-fonts.h"
 
 String DAYS[3] = {"THU", "FRI", "SAT"};
 String WEATHERS[3] = {"Q", "H", "B"};

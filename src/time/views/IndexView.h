@@ -4,9 +4,9 @@
 
 #include <espix-core.h>
 
-class ClockView : public View {
+class TimeIndexView : public View {
 public:
-  ClockView() {
+  TimeIndexView() {
   }
 
   bool shouldUpdate() {
@@ -31,6 +31,13 @@ public:
     context->setFontSize(FontSize::H1);
     context->setTextAlign(TextAlign::CENTER_BOTH);
     context->drawString(_text);
+  }
+
+  void didMount() {
+    Serial.print("TimeIndexView: ");
+    Serial.print(getWidth());
+    Serial.print(" x ");
+    Serial.println(getHeight());
   }
 
 private:

@@ -4,9 +4,9 @@
 
 #include <espix-core.h>
 
-#include "../assets/icon-fonts.h"
+#include "../../assets/icon-fonts.h"
 
-class WeatherTodayView : public View {
+class WeatherIndexView : public View {
 public:
   void render(CanvasContext *context) {
     _drawContent(context);
