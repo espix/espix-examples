@@ -4,7 +4,7 @@
 
 #include <espix-core.h>
 
-#include "../../assets/icon-fonts.h"
+#include "../assets/meteocons-font.h"
 
 #include "./WeatherForecastView.h"
 
@@ -29,16 +29,16 @@ private:
   void _drawContent(CanvasContext *context) {
     context->setFontSize(FontSize::NORMAL);
     context->setTextAlign(TextAlign::LEFT);
-    context->drawString("Mostly Cloudy", 60, 14);
+    context->drawString("Mostly Cloudy", 60, 12);
 
     String temp = "32°C";
     context->setFontSize(FontSize::H1);
-    context->drawString(temp, 60, 24);
+    context->drawString(temp, 60, 22);
 
     context->setFont(Meteocons_Plain_42);
     String weatherIcon = "Q";
     int weatherIconWidth = context->getStringWidth(weatherIcon);
-    context->drawString(weatherIcon, 32 - weatherIconWidth / 2, 9);
+    context->drawString(weatherIcon, 32 - weatherIconWidth / 2, 7);
   }
 
   WeatherForecastView *_forecastView = NULL;

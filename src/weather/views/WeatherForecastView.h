@@ -4,7 +4,7 @@
 
 #include <espix-core.h>
 
-#include "../../assets/icon-fonts.h"
+#include "../assets/meteocons-font.h"
 
 String DAYS[3] = {"THU", "FRI", "SAT"};
 String WEATHERS[3] = {"Q", "H", "B"};
@@ -27,12 +27,12 @@ private:
     context->setTextAlign(TextAlign::CENTER);
     context->setFontSize(FontSize::NORMAL);
     String day = DAYS[dayIndex];
-    context->drawString(day, 20 + x, 4);
+    context->drawString(day, 20 + x, 2);
 
     context->setFont(Meteocons_Plain_21);
-    context->drawString(WEATHERS[dayIndex], x + 20, 16);
+    context->drawString(WEATHERS[dayIndex], x + 20, 14);
 
     context->setFontSize(FontSize::NORMAL);
-    context->drawString(TEMPERATURES[dayIndex], x + 20, 40);
+    context->drawString(TEMPERATURES[dayIndex], x + 20, 38);
   }
 };
