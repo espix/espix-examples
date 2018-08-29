@@ -18,12 +18,14 @@ bool connecting = false;
 
 SH1106Wire display(0x3c, OLED_SDA, OLED_CLK);
 
+StatusBar statusBar;
 RootView rootView;
 ProgressView connectionView("Connecting to WiFi...", ProgressMode::INDETERMINATE);
 
 void onConnected() {
   connecting = false;
   Application.enableOTA();
+  Application.setStatusView(&statusBar);
   Application.setRootView(&rootView, TRANSITION_OPTIONS_DOWN);
 }
 
