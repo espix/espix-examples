@@ -33,13 +33,6 @@ public:
     context->drawString(_text);
   }
 
-  void didMount() {
-    Serial.print("TimeIndexView: ");
-    Serial.print(getWidth());
-    Serial.print(" x ");
-    Serial.println(getHeight());
-  }
-
 private:
   String _text;
 };
