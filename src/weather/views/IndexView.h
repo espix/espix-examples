@@ -10,6 +10,10 @@
 
 class WeatherIndexView : public View {
 public:
+  WeatherIndexView() : View() {
+    setSelectable(true);
+  }
+
   void render(CanvasContext *context) {
     _drawContent(context);
   }
