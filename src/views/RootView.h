@@ -11,9 +11,14 @@ public:
     addSubviews({new TimeIndexView(), new WeatherIndexView()});
   }
 
-  void didMount() {
+  void willMount() {
+    Application.hideStatusView();
     if (getCurrentView() == NULL) {
       showFirstSubview();
     }
+  }
+
+  void willUnmount() {
+    Application.showStatusView();
   }
 };
